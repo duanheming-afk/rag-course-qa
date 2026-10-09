@@ -1,111 +1,199 @@
 # 课程资料 RAG 问答系统
 
-这是一个基于本地 Qdrant、BGE 中文向量模型和 Ollama 的课程资料问答项目。回答会展示检索候选、句子级证据引用和引用片段，便于人工核对。
+基于本地 Qdrant、BGE 中文向量模型、Ollama、FastAPI 和 Gradio 的课程资料问答项目。系统展示检索候选、句子级引用与原文片段，便于追溯回答来源和人工核对。
 
-## 1. 配置环境
+重点是完成“资料处理 → 检索 → 生成 → 证据约束 → 回归评测”的工程闭环，而不是声称回答一定正确。
+
+## 已实现的功能与代码入口
+
+| 能力 | 实现与边界 |
+|---|---|
+| Markdown 资料处理 | `app/loader.py`、`app/splitter.py` 按章节和字符窗口切块，保留课程、文件、章节等元数据 |
+| 本地向量检索 | `app/retriever.py` 使用 BGE 与 Qdrant，支持课程过滤，扩大 Dense 候选后结合标题、正文词法匹配排序 |
+| 显式线索恢复 | 问题中有带引号线索时，从同课程索引补入匹配片段，减少“文件已召回但答案段落遗漏” |
+| 生成与引用 | `app/generator.py` 调用 Ollama，`app/citations.py` 将引用编号映射到原文片段 |
+| 句子级证据约束 | `app/evidence.py` 用向量语义相似度匹配结论与资料，补充引用、移除低分表述，覆盖不足时拒答 |
+| 澄清与拒答 | `app/guardrails.py` 处理部分缺少上下文、敏感或缺乏依据的问题；不是通用安全保证 |
+| 窄范围摘录降级 | 对有明确引号线索的公式、关系或复杂度问题，在模型拒答时尝试摘录命中原文，并继续做证据校验 |
+| 服务接口 | FastAPI 问答、存活与就绪检查，Gradio 网页；`app/service.py` 管理共享管线和并发访问生命周期 |
+| 检索实验与评测 | `app/hybrid.py` 实现 Dense + BM25 的 RRF 融合，`app/reranker.py` 实现 CrossEncoder 重排，评测脚本支持对照 |
+
+当前 API 问答管线使用 Dense 检索及上述词法/显式线索优化；Hybrid 和 CrossEncoder 是可运行的实验策略，尚未接入默认问答管线。
+
+当前只读取 Markdown。没有 PDF 解析、OCR 或多模态输入；元数据中的 `page=1` 是占位值，不是真实 PDF 页码。
+
+## 数据范围
+
+仓库包含 7 门课程、30 份 Markdown 演示讲义；使用默认 `chunk_size=500`、`chunk_overlap=80` 时，已有处理清单记录 557 个章节单元、612 个文本块。
+
+评测报告将这些资料标注为“合成讲义、小规模自建测试”，不能据此代表真实企业知识库效果。`INDEX.md` 不参与切块。
+
+原始资料在 [data/raw](data/raw)。`data/processed/` 和 `index/` 被 Git 忽略，克隆仓库后需要在本机生成文本块和索引，不能直接假设已有 612 个向量点。
+
+## 快速开始
+
+本地验证环境：Python 3.12.4。以下命令在项目根目录执行，依赖见 [requirements.txt](requirements.txt)。
+
+### 1. 创建环境
+
+Windows PowerShell：
 
 ```powershell
-.\.venv\Scripts\Activate.ps1
+git clone https://github.com/duanheming-afk/rag-course-qa.git
+cd rag-course-qa
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
 Copy-Item .env.example .env
 ```
 
-根据本机模型修改 `.env`。当前默认模型是 `qwen2.5:3b`，Ollama 地址建议使用 `http://127.0.0.1:11434`。
+已有 `.env` 时不要覆盖它。默认 `EMBEDDING_MODEL=BAAI/bge-small-zh-v1.5`、`LLM_MODEL=qwen2.5:3b`，Ollama 客户端地址为 `http://127.0.0.1:11434`。
 
-启动 Ollama 后确认模型存在：
+Linux / macOS：
+
+```bash
+git clone https://github.com/duanheming-afk/rag-course-qa.git
+cd rag-course-qa
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+cp .env.example .env
+```
+
+以下 Windows 命令显式使用虚拟环境解释器；Linux / macOS 激活环境后将 `.\.venv\Scripts\python.exe` 换为 `python`。
+
+### 2. 准备模型
+
+先安装 Ollama 并下载模型：
 
 ```powershell
-ollama serve
+ollama pull qwen2.5:3b
 ollama list
 ```
 
-## 2. 数据和索引
+如 Ollama 尚未运行，在独立终端执行 `ollama serve`；已有后台服务时无需重复启动。构建索引时会加载 BGE 模型，首次使用需下载模型文件。
 
-原始 Markdown 放在 `data/raw`。如需重新处理数据和构建索引：
-
-```powershell
-python scripts/ingest.py
-python scripts/build_index.py
-```
-
-构建索引使用的向量模型、集合名和路径必须与 `.env` 保持一致。当前索引已有 612 个向量点。
-
-## 3. 启动服务
+### 3. 处理资料、构建索引
 
 ```powershell
-python scripts/run_api.py
+.\.venv\Scripts\python.exe scripts/ingest.py
+.\.venv\Scripts\python.exe scripts/build_index.py
 ```
 
-打开 `http://127.0.0.1:8000/ui/` 使用网页界面，或访问：
+这些命令使用默认路径、集合名和向量模型。自定义 `.env` 后，需通过 `build_index.py` 的 `--chunks`、`--index`、`--collection`、`--model` 参数使用相同配置，不能混用不同模型或维度的索引。
 
-```text
-GET  /live       进程存活检查
-GET  /health     索引和 Ollama 就绪检查
-GET  /courses    可用课程列表
-POST /ask        问答接口
-```
+Qdrant 使用本地存储模式；构建索引或运行独立评测前，应停止正在占用同一索引的 API/CLI 进程。
 
-示例请求：
+### 4. 启动服务
 
 ```powershell
-Invoke-RestMethod http://127.0.0.1:8000/ask -Method Post -ContentType 'application/json' -Body (@{
-  question = '什么是导数的定义？'
-  course = '高等数学'
-  top_k = 8
-} | ConvertTo-Json)
+.\.venv\Scripts\python.exe scripts/run_api.py
 ```
 
-`/health` 返回 `ready: true` 后才表示依赖就绪；实际回答仍需结合返回的检索片段和引用进行核对。
+| 地址 / 接口 | 用途 |
+|---|---|
+| `http://127.0.0.1:8000/ui/` | Gradio 问答界面 |
+| `http://127.0.0.1:8000/docs` | Swagger API 文档 |
+| `GET /live` | 进程存活检查 |
+| `GET /health` | 索引和 Ollama 就绪检查；依赖未就绪时返回 503 |
+| `GET /courses` | 可用课程列表 |
+| `POST /ask` | 问答接口 |
 
-每个回答会经过句子级证据校验：系统将每个结论与检索片段做语义匹配、在结论末尾补上对应 `[资料N]`，并移除未达到 `EVIDENCE_MIN_SCORE` 的表述。若保留结论的比例低于 `EVIDENCE_MIN_COVERAGE`，系统会拒绝该回答。它提供的是可审计的相关性约束，不是替代人工审核的逻辑蕴含证明。
-
-对于问题中明确给出的带引号线索（例如“例 3”“贝叶斯公式”“过采样”），检索器会在同课程索引中恢复精确匹配的片段，再与 Dense 候选合并排序。该策略只处理显式线索，不改变普通问题的 Dense 检索路径，用于避免“目标文件已召回但具体答案片段未进入上下文”的情况。
-
-## 4. 运行评测
-
-先跑单元测试：
+示例请求，在另一个 PowerShell 窗口执行：
 
 ```powershell
-python -m unittest discover -s tests -v
+$questionRequest = @{
+    question = '什么是导数的定义？'
+    course = '高等数学'
+    top_k = 8
+} | ConvertTo-Json
+Invoke-RestMethod http://127.0.0.1:8000/ask -Method Post -ContentType 'application/json; charset=utf-8' -Body $questionRequest
 ```
 
-检索评测：
+`/health` 返回 `ready: true` 只说明依赖就绪，不代表回答正确。使用时请核对检索原文、引用与被移除表述的警告。
+
+也可在停止 API 后直接提问：
 
 ```powershell
-python scripts/evaluate.py --skip-rerank
+.\.venv\Scripts\python.exe scripts/ask.py '什么是反向传播算法？' --course '机器学习'
 ```
 
-答案评测：
+## 证据约束如何工作
+
+系统把生成回答拆成结论，将每条结论与检索片段作向量语义匹配，在保留结论后添加 `[资料N]`，并删除低于 `EVIDENCE_MIN_SCORE` 的表述。保留结论占原始结论的比例低于 `EVIDENCE_MIN_COVERAGE` 时，拒绝输出回答。
+
+默认相似度阈值为 0.52、覆盖率阈值为 0.50。这里的“证据覆盖率”是语义匹配代理指标，不是自然语言蕴含证明，也不是答案准确率。相似但错误的结论仍可能通过，删除结论也可能损失完整性，需要人工复核。
+
+## 测试与评测命令
+
+单元测试不要求加载真实 Ollama 或 Qdrant 索引：
 
 ```powershell
-python scripts/evaluate_answers.py --include-challenges
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-每次评测会写入带时间戳的目录，包含 `answers.json`、`summary.md` 和人工复核模板。关键词命中率、文件召回率和引用编号有效率只是自动代理指标，不能替代人工判断答案是否正确、完整、忠实于资料。
+2026-10-09 本地核验：24 个单元测试全部通过。覆盖引用映射、词法与显式线索排序、澄清/拒答、证据筛选、窄范围公式摘录、评测队列导出，以及模型空回答/截断回答处理；不等于真实端到端准确率验证。
 
-最近一次 136 条人工确认集回归（`qwen2.5:3b`）中，目标文件引用率为 100%、平均证据覆盖率为 98.33%、全句证据率为 95.54%，歧义题澄清率和无依据题拒答率均为 100%；检索基准 Dense Top-1/Top-5 均为 100%。这些指标只用于工程回归，不能替代人工复核。
-
-## 5. 建立独立人工评测集
-
-先从课程资料创建待复核队列；它是 AI 起草的标注候选，不是人工标签：
+停止占用索引的服务后，运行检索对照：
 
 ```powershell
-python scripts/build_holdout_review_queue.py
+.\.venv\Scripts\python.exe scripts/evaluate.py --skip-rerank
 ```
 
-默认会生成 120 条可回答候选题和 24 条歧义/无依据候选题。按照 [评测标注规范](docs/EVALUATION_PROTOCOL.md) 完成人工复核后，再导出至少 100 条审核通过且不与现有题目重复的独立评测集：
+去掉 `--skip-rerank` 可加入 CrossEncoder 策略；首次运行需下载重排模型。运行已有 136 条回归集：
 
 ```powershell
-python scripts/pre_review_holdout.py --count 20
-python scripts/review_holdout.py
-python scripts/export_approved_holdout.py --check
-python scripts/export_approved_holdout.py --min-approved 100
-python scripts/evaluate_answers.py --questions data/eval/holdout_approved.jsonl --top-k 8
+.\.venv\Scripts\python.exe scripts/evaluate_answers.py --questions data/eval/holdout_approved.jsonl --top-k 8 --output-dir reports/holdout_runs
 ```
 
-## 6. 直接提问
+每次评测会新建带时间戳的报告目录，保留配置、数据哈希、逐题结果与人工复核模板。数值可能随模型版本、硬件和配置变化。
+
+## 已有报告：指标与限制
+
+### 136 条答案回归
+
+来源：[2026-09-21 报告](reports/holdout_runs/20260921T061907988848Z/summary.md)、[逐题结果与配置](reports/holdout_runs/20260921T061907988848Z/answers.json)。使用 `qwen2.5:3b`、Dense、`top_k=8`、`max_tokens=2048`、`temperature=0`、`seed=42`。
+
+该自建集含 112 条可回答题、12 条歧义题、12 条无依据题，用于工程回归，不作为严格独立的泛化能力证明。
+
+| 指标 | 已记录结果 | 解释 |
+|---|---:|---|
+| 请求成功率 | 100% | 完成处理，不等于答案正确 |
+| 关键词召回代理分 | 45.83% | 参考关键词命中程度，不是语义准确率；也提示需要继续检查答案完整性 |
+| 目标文件召回率 / 引用率 | 100% / 100% | 文件层面覆盖，不保证命中正确段落或引用真正支持结论 |
+| 平均语义证据覆盖率 | 98.33% | 原始生成结论中通过相似度筛选的平均比例 |
+| 全句语义证据率 | 95.54% | 原始结论全部通过相似度筛选的答案比例 |
+| 无依据题拒答率 | 100%（12 题） | 仅限本次无依据样本 |
+| 歧义题澄清率 | 100%（12 题） | 仅限本次歧义样本 |
+| 可回答题误拒答率 | 0% | 不能据此判断答案完整性 |
+| 无效 / 缺失引用编号样本数 | 0 / 0 | 引用格式检查，不是引用忠实性检查 |
+| P50 / P95 单题耗时 | 1542.36 / 2743.21 ms | 逐题检索与生成耗时；首题可能包含冷启动，不是并发压测结果 |
+| 人工答案正确性 / 证据支持评分 | 未完成 | 报告字段仍为 `null` |
+
+题目与参考答案的审核确认，不等于对模型生成答案完成了正确性评分。待填模板见 [manual_review.json](reports/holdout_runs/20260921T061907988848Z/manual_review.json)。
+
+### 30 条文件级检索对照
+
+来源：[检索报告](reports/retrieval_runs_after_anchor/20260921T033410319879Z/summary.md)、[逐题结果](reports/retrieval_runs_after_anchor/20260921T033410319879Z/retrieval.json)。`top_k=5`、`candidate_k=20`，计时不含模型加载。
+
+| 策略 | Top-1 | Top-5 | MRR | 平均耗时 / P95 |
+|---|---:|---:|---:|---:|
+| Dense | 100% | 100% | 1.0000 | 8.86 / 11.09 ms |
+| Hybrid_RRF | 100% | 100% | 1.0000 | 9.98 / 12.01 ms |
+
+本组样本上没有观察到 Hybrid 的文件命中优势。它是合成讲义上的小样本文件级实验，不能说明段落检索或最终答案已达到 100% 准确率。旧报告计时口径不同，不直接作性能比较。
+
+## 人工评测流程与下一步
+
+新建候选队列会写入评测数据文件；已有审核结果时先备份，不要为了查看报告重复生成队列。
 
 ```powershell
-python scripts/ask.py '什么是反向传播算法？' --course '机器学习'
+.\.venv\Scripts\python.exe scripts/build_holdout_review_queue.py
+.\.venv\Scripts\python.exe scripts/pre_review_holdout.py --count 20
+.\.venv\Scripts\python.exe scripts/review_holdout.py
+.\.venv\Scripts\python.exe scripts/export_approved_holdout.py --check
+.\.venv\Scripts\python.exe scripts/export_approved_holdout.py --min-approved 100
 ```
 
-如果模型服务未启动、模型名称不匹配、索引被另一个进程占用或索引维度不一致，服务会返回可识别的错误码，而不是静默返回错误答案。
+候选队列由 AI 起草；按 [评测标注规范](docs/EVALUATION_PROTOCOL.md) 阅读原文、审核题目和参考答案后才可导出。要做独立评测，应锁定未用于调参的新题集，并在生成后另行填写答案正确性、完整性及证据支持评分。
+
+下一步优先完成已有 136 条模型答案的人工评分与错误分类，再以真实资料、新题集对比 Dense、Hybrid、Rerank。PDF/OCR、多模态和生产级并发部署属于后续功能，不列为当前已完成能力。
