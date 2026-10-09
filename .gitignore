@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.env
+.env.*
+!.env.example
+index/
+data/processed/
+reports/runs/
+reports/holdout_pre_review/
+work/
+*.log

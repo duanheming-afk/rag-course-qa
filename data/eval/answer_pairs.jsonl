@@ -1,0 +1,30 @@
+{"id":"q01","question":"两个重要极限分别是什么？","gold_source_file":"高数-01-极限与连续.md","reference_answer":"两个重要极限是 lim(x→0) sin x/x=1，以及 lim(x→∞)(1+1/x)^x=e。","required_keywords":["sin x/x","= 1","e"]}
+{"id":"q02","question":"导数的定义是什么？","gold_source_file":"高数-02-导数与微分.md","reference_answer":"函数在 x0 处的导数是差商 [f(x0+Δx)-f(x0)]/Δx 在 Δx→0 时的极限。","required_keywords":["差商","Δx","极限","f'(x0)"]}
+{"id":"q03","question":"牛顿-莱布尼茨公式如何使用？","gold_source_file":"高数-03-一元积分学.md","reference_answer":"若 F 是 f 在 [a,b] 上的一个原函数，则定积分 ∫a^b f(x)dx=F(b)-F(a)，即先求原函数，再计算上下限函数值之差。","required_keywords":["原函数","F(b)","F(a)","定积分"]}
+{"id":"q04","question":"多元函数的全微分如何定义？","gold_source_file":"高数-04-多元函数微分.md","reference_answer":"若 Δz=f(x0+Δx,y0+Δy)-f(x0,y0)可表示为 fxΔx+fyΔy+o(ρ)，则函数可微，全微分 dz=fxΔx+fyΔy。","required_keywords":["可微分","全微分","偏导数","o(ρ)"]}
+{"id":"q05","question":"如何判断一个数项级数是否收敛？","gold_source_file":"高数-05-无穷级数.md","reference_answer":"先检查级数通项是否趋于 0，这是收敛的必要条件；正项级数可用比较、比值或根值判别法，交错级数可用莱布尼茨判别法。","required_keywords":["通项","趋于 0","比较判别法","比值判别法","莱布尼茨"]}
+{"id":"q06","question":"行列式有哪些基本性质？","gold_source_file":"线代-01-矩阵与行列式.md","reference_answer":"行列式转置值不变；交换两行或两列变号；两行相同或成比例时为 0；某行乘 k 行列式乘 k；某行加另一行的 k 倍值不变。","required_keywords":["转置","变号","相同","成比例","倍加"]}
+{"id":"q07","question":"矩阵的秩如何定义？","gold_source_file":"线代-02-矩阵的秩与初等变换.md","reference_answer":"矩阵化为行阶梯形后，其中非零行的个数称为矩阵的秩，记作 rank(A) 或 r(A)。","required_keywords":["行阶梯形","非零行","rank","初等行变换"]}
+{"id":"q08","question":"线性方程组的解有哪几种情况？","gold_source_file":"线代-03-向量空间与线性方程组.md","reference_answer":"根据系数矩阵 A 与增广矩阵(A|b)的秩，可分为无解、唯一解和无穷多解三种情况。","required_keywords":["无解","唯一解","无穷多解","增广矩阵"]}
+{"id":"q09","question":"特征值和特征向量是什么关系？","gold_source_file":"线代-04-特征值与特征向量.md","reference_answer":"若存在非零向量 x 使 Ax=λx，则 λ 是矩阵 A 的特征值，x 是属于 λ 的特征向量。","required_keywords":["Ax=λx","非零向量","特征值","特征向量"]}
+{"id":"q10","question":"SVD 矩阵分解的基本形式是什么？","gold_source_file":"线代-05-二次型与矩阵分解.md","reference_answer":"任意 m×n 矩阵 A 可分解为 A=UΣV^T，其中 U、V 为正交矩阵，Σ 的对角线包含按降序排列的奇异值。","required_keywords":["A=UΣV^T","正交矩阵","奇异值","Σ"]}
+{"id":"q11","question":"贝叶斯公式是什么？","gold_source_file":"概率-01-随机事件与概率.md","reference_answer":"在完备事件组下，P(Bj|A)=P(Bj)P(A|Bj)/ΣPiP(A|Bi)，用于已知结果推断原因。","required_keywords":["P(Bj|A)","P(Bj)","P(A|Bj)","逆概率"]}
+{"id":"q12","question":"随机变量的分布函数如何定义？","gold_source_file":"概率-02-随机变量与分布.md","reference_answer":"随机变量 X 的分布函数定义为 F(x)=P(X≤x)，它是单调不减、取值在 0 到 1 之间且右连续的函数。","required_keywords":["F(x)","P(X≤x)","单调不减","右连续"]}
+{"id":"q13","question":"什么是联合分布和边缘分布？","gold_source_file":"概率-03-多维随机变量.md","reference_answer":"联合分布描述 X、Y 同时取值的概率；边缘分布由联合分布对另一个变量求和或积分得到。","required_keywords":["联合分布","边缘分布","同时","求和"]}
+{"id":"q14","question":"中心极限定理说明了什么？","gold_source_file":"概率-04-数字特征与极限定理.md","reference_answer":"独立同分布且方差有限的随机变量之和，在样本量充分大时近似服从正态分布，标准化后趋于 N(0,1)。","required_keywords":["独立同分布","正态分布","标准化","N(0,1)"]}
+{"id":"q15","question":"区间估计和点估计有什么区别？","gold_source_file":"概率-05-参数估计与假设检验.md","reference_answer":"点估计用一个统计量给出总体参数的单一估计值；区间估计给出包含总体参数的区间，并附带置信水平。","required_keywords":["点估计","区间估计","单一","置信水平"]}
+{"id":"q16","question":"速度和加速度如何定义？","gold_source_file":"物理-01-质点运动学.md","reference_answer":"瞬时速度 v=dr/dt，是位移对时间的一阶导数；加速度 a=dv/dt=d²r/dt²，是速度对时间的导数。","required_keywords":["v=","dr/dt","a=","dv/dt"]}
+{"id":"q17","question":"牛顿第二定律的内容是什么？","gold_source_file":"物理-02-牛顿力学.md","reference_answer":"在惯性参考系中，物体加速度与所受合外力成正比、与质量成反比，方向与合外力相同，公式为 F=ma。","required_keywords":["F=ma","合外力","惯性参考系","质量"]}
+{"id":"q18","question":"电场强度如何定义？","gold_source_file":"物理-03-电磁学基础.md","reference_answer":"电场中某点的电场强度定义为放入该点的试探电荷所受电场力与试探电荷电量之比，即 E=F/q0。","required_keywords":["E=F/q0","电场力","试探电荷"]}
+{"id":"q19","question":"简谐振动的基本特征是什么？","gold_source_file":"物理-04-机械振动与波.md","reference_answer":"简谐振动是在平衡位置附近的周期性往复运动，位移按正弦或余弦变化，常写为 x=A cos(ωt+φ)，且 a=-ω²x。","required_keywords":["周期性","x=A","余弦","a=-ω²x"]}
+{"id":"q20","question":"热力学第一定律是什么？","gold_source_file":"物理-05-热力学基础.md","reference_answer":"系统吸收的热量等于内能增加量与系统对外做功之和，公式为 Q=ΔU+W。","required_keywords":["Q=ΔU+W","内能","做功","热量"]}
+{"id":"q21","question":"栈和队列有什么区别？","gold_source_file":"计科-01-数据结构基础.md","reference_answer":"栈遵循后进先出，插入和删除都在栈顶；队列遵循先进先出，从队尾插入、从队头删除。","required_keywords":["后进先出","先进先出","栈顶","队头"]}
+{"id":"q22","question":"二叉树有哪些遍历方式？","gold_source_file":"计科-02-树与二叉树.md","reference_answer":"二叉树常见遍历包括先序、中序、后序和层序；前三种通常用递归或栈，层序遍历使用队列。","required_keywords":["先序","中序","后序","层序","队列"]}
+{"id":"q23","question":"深度优先搜索和广度优先搜索有什么区别？","gold_source_file":"计科-03-图.md","reference_answer":"DFS 沿一条路径尽可能深入并回溯，通常用递归或栈；BFS 按层访问顶点，使用队列，适合求无权图最短路径。","required_keywords":["DFS","BFS","回溯","队列","最短路径"]}
+{"id":"q24","question":"动态规划和贪心算法有什么区别？","gold_source_file":"计科-04-算法设计与分析.md","reference_answer":"动态规划保存并复用重叠子问题的结果，依赖最优子结构；贪心每一步选择当前局部最优，只有满足贪心选择性质时才能保证全局最优。","required_keywords":["动态规划","重叠子问题","贪心","局部最优","全局最优"]}
+{"id":"q25","question":"进程和线程有什么区别？","gold_source_file":"计科-05-操作系统.md","reference_answer":"进程是资源分配和调度的基本单位，拥有独立地址空间；线程是 CPU 调度的基本单位，同一进程内线程共享地址空间，创建和切换开销更小。","required_keywords":["进程","线程","资源分配","调度","共享地址空间"]}
+{"id":"q26","question":"逻辑回归为什么可以用于分类？","gold_source_file":"ML-01-线性模型与逻辑回归.md","reference_answer":"逻辑回归先对特征做线性组合，再通过 Sigmoid 映射到 0 到 1，得到样本属于正类的概率，并用阈值完成分类。","required_keywords":["线性组合","Sigmoid","0 到 1","概率","分类"]}
+{"id":"q27","question":"随机森林是如何构成的？","gold_source_file":"ML-02-决策树与集成学习.md","reference_answer":"随机森林属于 Bagging 集成，由多棵决策树组成；训练时对样本进行有放回抽样，并在节点划分时随机选择特征，最后通过投票或平均得到结果。","required_keywords":["多棵决策树","Bagging","有放回抽样","随机选择特征","投票"]}
+{"id":"q28","question":"反向传播算法的基本思想是什么？","gold_source_file":"ML-03-神经网络与深度学习.md","reference_answer":"反向传播利用链式法则，从输出层向输入层逐层计算损失对各参数的梯度，再用梯度下降更新权重和偏置。","required_keywords":["链式法则","输出层","梯度","梯度下降","权重"]}
+{"id":"q29","question":"GDP 有哪三种核算方法？","gold_source_file":"经济-02-宏观经济学.md","reference_answer":"GDP 有生产法、收入法和支出法三种核算方法；支出法公式为 GDP=C+I+G+(X-M)。","required_keywords":["生产法","收入法","支出法","C+I+G"]}
+{"id":"q30","question":"需求价格弹性表示什么？","gold_source_file":"经济-01-微观经济学.md","reference_answer":"需求价格弹性表示需求量对价格变动的敏感程度，Ed=-(ΔQ/Q)/(ΔP/P)；绝对值大于 1 为富有弹性，小于 1 为缺乏弹性。","required_keywords":["需求量","价格变动","Ed","富有弹性","缺乏弹性"]}

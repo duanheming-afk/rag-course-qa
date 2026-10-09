@@ -1,0 +1,140 @@
+{
+  "question_count": 2,
+  "metric_note": "keyword_recall 是基于人工定义关键点的自动化代理指标，不等同于人工或 LLM-as-a-Judge 评分。",
+  "summaries": [
+    {
+      "scheme": "Dense",
+      "answer_keyword_recall": 0.0,
+      "retrieved_gold_rate": 1.0,
+      "citation_gold_rate": 0.0,
+      "avg_latency_ms": 1675.66
+    },
+    {
+      "scheme": "Hybrid_RRF",
+      "answer_keyword_recall": 0.4583,
+      "retrieved_gold_rate": 1.0,
+      "citation_gold_rate": 0.0,
+      "avg_latency_ms": 1620.54
+    },
+    {
+      "scheme": "Dense_Rerank",
+      "answer_keyword_recall": 0.0,
+      "retrieved_gold_rate": 1.0,
+      "citation_gold_rate": 0.0,
+      "avg_latency_ms": 2397.71
+    },
+    {
+      "scheme": "Hybrid_RRF_Rerank",
+      "answer_keyword_recall": 0.1666,
+      "retrieved_gold_rate": 1.0,
+      "citation_gold_rate": 0.0,
+      "avg_latency_ms": 2413.86
+    }
+  ],
+  "details": {
+    "Dense": [
+      {
+        "id": "q01",
+        "question": "两个重要极限分别是什么？",
+        "reference_answer": "两个重要极限是 lim(x→0) sin x/x=1，以及 lim(x→∞)(1+1/x)^x=e。",
+        "answer": "资料4",
+        "gold_source_file": "高数-01-极限与连续.md",
+        "retrieved_gold": true,
+        "citation_gold": false,
+        "keyword_recall": 0.0,
+        "latency_ms": 1959.79,
+        "model": "deepseek-r1:1.5b"
+      },
+      {
+        "id": "q02",
+        "question": "导数的定义是什么？",
+        "reference_answer": "函数在 x0 处的导数是差商 [f(x0+Δx)-f(x0)]/Δx 在 Δx→0 时的极限。",
+        "answer": "导数的定义是左右导数都存在且相等，且函数在该点可导。来源：资料1，编号：资料1",
+        "gold_source_file": "高数-02-导数与微分.md",
+        "retrieved_gold": true,
+        "citation_gold": false,
+        "keyword_recall": 0.0,
+        "latency_ms": 1391.5,
+        "model": "deepseek-r1:1.5b"
+      }
+    ],
+    "Hybrid_RRF": [
+      {
+        "id": "q01",
+        "question": "两个重要极限分别是什么？",
+        "reference_answer": "两个重要极限是 lim(x→0) sin x/x=1，以及 lim(x→∞)(1+1/x)^x=e。",
+        "answer": "两个重要极限分别为：\n\n1. 第一个重要极限：当x趋近于0时，sinx/x的极限是1。来源：资料2。\n\n2. 第二个重要极限：当x趋近于无穷大时，(1 + 1/x)^x的极限是e。来源：资料1",
+        "gold_source_file": "高数-01-极限与连续.md",
+        "retrieved_gold": true,
+        "citation_gold": false,
+        "keyword_recall": 0.6667,
+        "latency_ms": 1609.24,
+        "model": "deepseek-r1:1.5b"
+      },
+      {
+        "id": "q02",
+        "question": "导数的定义是什么？",
+        "reference_answer": "函数在 x0 处的导数是差商 [f(x0+Δx)-f(x0)]/Δx 在 Δx→0 时的极限。",
+        "answer": "所以，导数的定义应该是资料3中的定义，因为它直接给出了导数的极限形式，并且提到了左右导",
+        "gold_source_file": "高数-02-导数与微分.md",
+        "retrieved_gold": true,
+        "citation_gold": false,
+        "keyword_recall": 0.25,
+        "latency_ms": 1631.82,
+        "model": "deepseek-r1:1.5b"
+      }
+    ],
+    "Dense_Rerank": [
+      {
+        "id": "q01",
+        "question": "两个重要极限分别是什么？",
+        "reference_answer": "两个重要极限是 lim(x→0) sin x/x=1，以及 lim(x→∞)(1+1/x)^x=e。",
+        "answer": "资料4是概率-04-数字特征与极限定理.md，章节6.3，中心极限定理的应用，提到了二项分布的正",
+        "gold_source_file": "高数-01-极限与连续.md",
+        "retrieved_gold": true,
+        "citation_gold": false,
+        "keyword_recall": 0.0,
+        "latency_ms": 2233.23,
+        "model": "deepseek-r1:1.5b"
+      },
+      {
+        "id": "q02",
+        "question": "导数的定义是什么？",
+        "reference_answer": "函数在 x0 处的导数是差商 [f(x0+Δx)-f(x0)]/Δx 在 Δx→0 时的极限。",
+        "answer": "综合来看",
+        "gold_source_file": "高数-02-导数与微分.md",
+        "retrieved_gold": true,
+        "citation_gold": false,
+        "keyword_recall": 0.0,
+        "latency_ms": 2562.17,
+        "model": "deepseek-r1:1.5b"
+      }
+    ],
+    "Hybrid_RRF_Rerank": [
+      {
+        "id": "q01",
+        "question": "两个重要极限分别是什么？",
+        "reference_answer": "两个重要极限是 lim(x→0) sin x/x=1，以及 lim(x→∞)(1+1/x)^x=e。",
+        "answer": "首先，第一个重要极限是：\n$$\\lim_{x \\to 0} \\frac{\\sin x}{x} = 1$$\n这个极限在x趋近于0时，结果为",
+        "gold_source_file": "高数-01-极限与连续.md",
+        "retrieved_gold": true,
+        "citation_gold": false,
+        "keyword_recall": 0.3333,
+        "latency_ms": 2324.73,
+        "model": "deepseek-r1:1.5b"
+      },
+      {
+        "id": "q02",
+        "question": "导数的定义是什么？",
+        "reference_answer": "函数在 x0 处的导数是差商 [f(x0+Δx)-f(x0)]/Δx 在 Δx→0 时的极限。",
+        "answer": "资料1中提到，二阶导数是函数的二阶变化率，n阶导数是连续取n次导数后的",
+        "gold_source_file": "高数-02-导数与微分.md",
+        "retrieved_gold": true,
+        "citation_gold": false,
+        "keyword_recall": 0.0,
+        "latency_ms": 2502.95,
+        "model": "deepseek-r1:1.5b"
+      }
+    ]
+  }
+}

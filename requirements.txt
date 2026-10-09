@@ -1,0 +1,9 @@
+pydantic==2.13.5
+python-dotenv==1.2.3
+numpy==2.5.2
+sentence-transformers==6.0.1
+qdrant-client==1.19.0
+fastapi==0.141.1
+uvicorn[standard]==0.52.4
+gradio==6.26.0
+rank-bm25==0.2.2

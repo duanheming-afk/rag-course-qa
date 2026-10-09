@@ -1,0 +1,519 @@
+{
+  "created_at": "20260921T030532153564Z",
+  "question_count": 30,
+  "dataset_sha256": "a245d12def5a16e47191805419067f1f9766f4f403ffa706a2c84bc59c23b4e1",
+  "chunks_sha256": "ce64953f25527ee044f6117302ac5b805a95b9998877a5594e182f1fad9de7c2",
+  "configuration": {
+    "embedding_model": "BAAI/bge-small-zh-v1.5",
+    "top_k": 5,
+    "candidate_k": 20,
+    "reranker_model": "BAAI/bge-reranker-base"
+  },
+  "note": "合成讲义上的文件级检索指标。耗时为单题检索与重排总耗时（含首题热身），不含模型加载。旧版 Rerank 报告漏计检索耗时且使用批量均摊，不可直接对比。",
+  "summaries": [
+    {
+      "scheme": "Dense",
+      "hit_rate@1": 0.9333,
+      "hit_rate@5": 1.0,
+      "mrr": 0.9611,
+      "avg_latency_ms": 13.24,
+      "p50_latency_ms": 10.65,
+      "p95_latency_ms": 12.6
+    },
+    {
+      "scheme": "Hybrid_RRF",
+      "hit_rate@1": 0.9333,
+      "hit_rate@5": 1.0,
+      "mrr": 0.9583,
+      "avg_latency_ms": 12.08,
+      "p50_latency_ms": 11.45,
+      "p95_latency_ms": 15.61
+    }
+  ],
+  "details": {
+    "Dense": [
+      {
+        "id": "q01",
+        "question": "两个重要极限分别是什么？",
+        "gold_source_file": "高数-01-极限与连续.md",
+        "rank": 1,
+        "top_source": "高数-01-极限与连续.md",
+        "latency_ms": 96.3779000003342
+      },
+      {
+        "id": "q02",
+        "question": "导数的定义是什么？",
+        "gold_source_file": "高数-02-导数与微分.md",
+        "rank": 1,
+        "top_source": "高数-02-导数与微分.md",
+        "latency_ms": 8.753799999794865
+      },
+      {
+        "id": "q03",
+        "question": "牛顿-莱布尼茨公式如何使用？",
+        "gold_source_file": "高数-03-一元积分学.md",
+        "rank": 1,
+        "top_source": "高数-03-一元积分学.md",
+        "latency_ms": 12.545300000056159
+      },
+      {
+        "id": "q04",
+        "question": "多元函数的全微分如何定义？",
+        "gold_source_file": "高数-04-多元函数微分.md",
+        "rank": 1,
+        "top_source": "高数-04-多元函数微分.md",
+        "latency_ms": 11.497099999360216
+      },
+      {
+        "id": "q05",
+        "question": "如何判断一个数项级数是否收敛？",
+        "gold_source_file": "高数-05-无穷级数.md",
+        "rank": 1,
+        "top_source": "高数-05-无穷级数.md",
+        "latency_ms": 12.23669999944832
+      },
+      {
+        "id": "q06",
+        "question": "行列式有哪些基本性质？",
+        "gold_source_file": "线代-01-矩阵与行列式.md",
+        "rank": 1,
+        "top_source": "线代-01-矩阵与行列式.md",
+        "latency_ms": 12.64900000023772
+      },
+      {
+        "id": "q07",
+        "question": "矩阵的秩如何定义？",
+        "gold_source_file": "线代-02-矩阵的秩与初等变换.md",
+        "rank": 1,
+        "top_source": "线代-02-矩阵的秩与初等变换.md",
+        "latency_ms": 9.551499999361113
+      },
+      {
+        "id": "q08",
+        "question": "线性方程组的解有哪几种情况？",
+        "gold_source_file": "线代-03-向量空间与线性方程组.md",
+        "rank": 1,
+        "top_source": "线代-03-向量空间与线性方程组.md",
+        "latency_ms": 10.690400000385125
+      },
+      {
+        "id": "q09",
+        "question": "特征值和特征向量是什么关系？",
+        "gold_source_file": "线代-04-特征值与特征向量.md",
+        "rank": 1,
+        "top_source": "线代-04-特征值与特征向量.md",
+        "latency_ms": 10.677700000087498
+      },
+      {
+        "id": "q10",
+        "question": "SVD 矩阵分解的基本形式是什么？",
+        "gold_source_file": "线代-05-二次型与矩阵分解.md",
+        "rank": 1,
+        "top_source": "线代-05-二次型与矩阵分解.md",
+        "latency_ms": 10.371399999712594
+      },
+      {
+        "id": "q11",
+        "question": "贝叶斯公式是什么？",
+        "gold_source_file": "概率-01-随机事件与概率.md",
+        "rank": 1,
+        "top_source": "概率-01-随机事件与概率.md",
+        "latency_ms": 10.203499999988708
+      },
+      {
+        "id": "q12",
+        "question": "随机变量的分布函数如何定义？",
+        "gold_source_file": "概率-02-随机变量与分布.md",
+        "rank": 1,
+        "top_source": "概率-02-随机变量与分布.md",
+        "latency_ms": 7.787699999425968
+      },
+      {
+        "id": "q13",
+        "question": "什么是联合分布和边缘分布？",
+        "gold_source_file": "概率-03-多维随机变量.md",
+        "rank": 1,
+        "top_source": "概率-03-多维随机变量.md",
+        "latency_ms": 9.49750000017957
+      },
+      {
+        "id": "q14",
+        "question": "中心极限定理说明了什么？",
+        "gold_source_file": "概率-04-数字特征与极限定理.md",
+        "rank": 1,
+        "top_source": "概率-04-数字特征与极限定理.md",
+        "latency_ms": 11.041300000215415
+      },
+      {
+        "id": "q15",
+        "question": "区间估计和点估计有什么区别？",
+        "gold_source_file": "概率-05-参数估计与假设检验.md",
+        "rank": 1,
+        "top_source": "概率-05-参数估计与假设检验.md",
+        "latency_ms": 10.938399999758985
+      },
+      {
+        "id": "q16",
+        "question": "速度和加速度如何定义？",
+        "gold_source_file": "物理-01-质点运动学.md",
+        "rank": 2,
+        "top_source": "高数-02-导数与微分.md",
+        "latency_ms": 10.830000000169093
+      },
+      {
+        "id": "q17",
+        "question": "牛顿第二定律的内容是什么？",
+        "gold_source_file": "物理-02-牛顿力学.md",
+        "rank": 1,
+        "top_source": "物理-02-牛顿力学.md",
+        "latency_ms": 9.943400000338443
+      },
+      {
+        "id": "q18",
+        "question": "电场强度如何定义？",
+        "gold_source_file": "物理-03-电磁学基础.md",
+        "rank": 1,
+        "top_source": "物理-03-电磁学基础.md",
+        "latency_ms": 9.937300000274263
+      },
+      {
+        "id": "q19",
+        "question": "简谐振动的基本特征是什么？",
+        "gold_source_file": "物理-04-机械振动与波.md",
+        "rank": 1,
+        "top_source": "物理-04-机械振动与波.md",
+        "latency_ms": 8.51669999974547
+      },
+      {
+        "id": "q20",
+        "question": "热力学第一定律是什么？",
+        "gold_source_file": "物理-05-热力学基础.md",
+        "rank": 1,
+        "top_source": "物理-05-热力学基础.md",
+        "latency_ms": 7.100899999386456
+      },
+      {
+        "id": "q21",
+        "question": "栈和队列有什么区别？",
+        "gold_source_file": "计科-01-数据结构基础.md",
+        "rank": 1,
+        "top_source": "计科-01-数据结构基础.md",
+        "latency_ms": 9.831200000007811
+      },
+      {
+        "id": "q22",
+        "question": "二叉树有哪些遍历方式？",
+        "gold_source_file": "计科-02-树与二叉树.md",
+        "rank": 1,
+        "top_source": "计科-02-树与二叉树.md",
+        "latency_ms": 10.624100000313774
+      },
+      {
+        "id": "q23",
+        "question": "深度优先搜索和广度优先搜索有什么区别？",
+        "gold_source_file": "计科-03-图.md",
+        "rank": 3,
+        "top_source": "计科-01-数据结构基础.md",
+        "latency_ms": 10.950400000183436
+      },
+      {
+        "id": "q24",
+        "question": "动态规划和贪心算法有什么区别？",
+        "gold_source_file": "计科-04-算法设计与分析.md",
+        "rank": 1,
+        "top_source": "计科-04-算法设计与分析.md",
+        "latency_ms": 10.79340000069351
+      },
+      {
+        "id": "q25",
+        "question": "进程和线程有什么区别？",
+        "gold_source_file": "计科-05-操作系统.md",
+        "rank": 1,
+        "top_source": "计科-05-操作系统.md",
+        "latency_ms": 10.018299999501323
+      },
+      {
+        "id": "q26",
+        "question": "逻辑回归为什么可以用于分类？",
+        "gold_source_file": "ML-01-线性模型与逻辑回归.md",
+        "rank": 1,
+        "top_source": "ML-01-线性模型与逻辑回归.md",
+        "latency_ms": 10.767699999632896
+      },
+      {
+        "id": "q27",
+        "question": "随机森林是如何构成的？",
+        "gold_source_file": "ML-02-决策树与集成学习.md",
+        "rank": 1,
+        "top_source": "ML-02-决策树与集成学习.md",
+        "latency_ms": 10.624900000038906
+      },
+      {
+        "id": "q28",
+        "question": "反向传播算法的基本思想是什么？",
+        "gold_source_file": "ML-03-神经网络与深度学习.md",
+        "rank": 1,
+        "top_source": "ML-03-神经网络与深度学习.md",
+        "latency_ms": 11.034800000743417
+      },
+      {
+        "id": "q29",
+        "question": "GDP 有哪三种核算方法？",
+        "gold_source_file": "经济-02-宏观经济学.md",
+        "rank": 1,
+        "top_source": "经济-02-宏观经济学.md",
+        "latency_ms": 10.401000000456406
+      },
+      {
+        "id": "q30",
+        "question": "需求价格弹性表示什么？",
+        "gold_source_file": "经济-01-微观经济学.md",
+        "rank": 1,
+        "top_source": "经济-01-微观经济学.md",
+        "latency_ms": 10.877400000026682
+      }
+    ],
+    "Hybrid_RRF": [
+      {
+        "id": "q01",
+        "question": "两个重要极限分别是什么？",
+        "gold_source_file": "高数-01-极限与连续.md",
+        "rank": 1,
+        "top_source": "高数-01-极限与连续.md",
+        "latency_ms": 12.732900000628433
+      },
+      {
+        "id": "q02",
+        "question": "导数的定义是什么？",
+        "gold_source_file": "高数-02-导数与微分.md",
+        "rank": 1,
+        "top_source": "高数-02-导数与微分.md",
+        "latency_ms": 9.69619999978022
+      },
+      {
+        "id": "q03",
+        "question": "牛顿-莱布尼茨公式如何使用？",
+        "gold_source_file": "高数-03-一元积分学.md",
+        "rank": 1,
+        "top_source": "高数-03-一元积分学.md",
+        "latency_ms": 11.292700000012701
+      },
+      {
+        "id": "q04",
+        "question": "多元函数的全微分如何定义？",
+        "gold_source_file": "高数-04-多元函数微分.md",
+        "rank": 1,
+        "top_source": "高数-04-多元函数微分.md",
+        "latency_ms": 10.791200000312529
+      },
+      {
+        "id": "q05",
+        "question": "如何判断一个数项级数是否收敛？",
+        "gold_source_file": "高数-05-无穷级数.md",
+        "rank": 1,
+        "top_source": "高数-05-无穷级数.md",
+        "latency_ms": 11.688600000525184
+      },
+      {
+        "id": "q06",
+        "question": "行列式有哪些基本性质？",
+        "gold_source_file": "线代-01-矩阵与行列式.md",
+        "rank": 1,
+        "top_source": "线代-01-矩阵与行列式.md",
+        "latency_ms": 11.919300000045041
+      },
+      {
+        "id": "q07",
+        "question": "矩阵的秩如何定义？",
+        "gold_source_file": "线代-02-矩阵的秩与初等变换.md",
+        "rank": 1,
+        "top_source": "线代-02-矩阵的秩与初等变换.md",
+        "latency_ms": 13.272799999867857
+      },
+      {
+        "id": "q08",
+        "question": "线性方程组的解有哪几种情况？",
+        "gold_source_file": "线代-03-向量空间与线性方程组.md",
+        "rank": 1,
+        "top_source": "线代-03-向量空间与线性方程组.md",
+        "latency_ms": 15.098099999704573
+      },
+      {
+        "id": "q09",
+        "question": "特征值和特征向量是什么关系？",
+        "gold_source_file": "线代-04-特征值与特征向量.md",
+        "rank": 1,
+        "top_source": "线代-04-特征值与特征向量.md",
+        "latency_ms": 15.868800000134797
+      },
+      {
+        "id": "q10",
+        "question": "SVD 矩阵分解的基本形式是什么？",
+        "gold_source_file": "线代-05-二次型与矩阵分解.md",
+        "rank": 1,
+        "top_source": "线代-05-二次型与矩阵分解.md",
+        "latency_ms": 15.633200000593206
+      },
+      {
+        "id": "q11",
+        "question": "贝叶斯公式是什么？",
+        "gold_source_file": "概率-01-随机事件与概率.md",
+        "rank": 1,
+        "top_source": "概率-01-随机事件与概率.md",
+        "latency_ms": 14.362400000209163
+      },
+      {
+        "id": "q12",
+        "question": "随机变量的分布函数如何定义？",
+        "gold_source_file": "概率-02-随机变量与分布.md",
+        "rank": 1,
+        "top_source": "概率-02-随机变量与分布.md",
+        "latency_ms": 11.511200000313693
+      },
+      {
+        "id": "q13",
+        "question": "什么是联合分布和边缘分布？",
+        "gold_source_file": "概率-03-多维随机变量.md",
+        "rank": 1,
+        "top_source": "概率-03-多维随机变量.md",
+        "latency_ms": 10.157199999412114
+      },
+      {
+        "id": "q14",
+        "question": "中心极限定理说明了什么？",
+        "gold_source_file": "概率-04-数字特征与极限定理.md",
+        "rank": 1,
+        "top_source": "概率-04-数字特征与极限定理.md",
+        "latency_ms": 10.184100000515173
+      },
+      {
+        "id": "q15",
+        "question": "区间估计和点估计有什么区别？",
+        "gold_source_file": "概率-05-参数估计与假设检验.md",
+        "rank": 1,
+        "top_source": "概率-05-参数估计与假设检验.md",
+        "latency_ms": 10.7797999999093
+      },
+      {
+        "id": "q16",
+        "question": "速度和加速度如何定义？",
+        "gold_source_file": "物理-01-质点运动学.md",
+        "rank": 2,
+        "top_source": "高数-02-导数与微分.md",
+        "latency_ms": 13.433399999485118
+      },
+      {
+        "id": "q17",
+        "question": "牛顿第二定律的内容是什么？",
+        "gold_source_file": "物理-02-牛顿力学.md",
+        "rank": 1,
+        "top_source": "物理-02-牛顿力学.md",
+        "latency_ms": 12.724600000183273
+      },
+      {
+        "id": "q18",
+        "question": "电场强度如何定义？",
+        "gold_source_file": "物理-03-电磁学基础.md",
+        "rank": 1,
+        "top_source": "物理-03-电磁学基础.md",
+        "latency_ms": 10.012200000346638
+      },
+      {
+        "id": "q19",
+        "question": "简谐振动的基本特征是什么？",
+        "gold_source_file": "物理-04-机械振动与波.md",
+        "rank": 1,
+        "top_source": "物理-04-机械振动与波.md",
+        "latency_ms": 11.382800000319548
+      },
+      {
+        "id": "q20",
+        "question": "热力学第一定律是什么？",
+        "gold_source_file": "物理-05-热力学基础.md",
+        "rank": 1,
+        "top_source": "物理-05-热力学基础.md",
+        "latency_ms": 11.51209999989078
+      },
+      {
+        "id": "q21",
+        "question": "栈和队列有什么区别？",
+        "gold_source_file": "计科-01-数据结构基础.md",
+        "rank": 1,
+        "top_source": "计科-01-数据结构基础.md",
+        "latency_ms": 10.893599999690196
+      },
+      {
+        "id": "q22",
+        "question": "二叉树有哪些遍历方式？",
+        "gold_source_file": "计科-02-树与二叉树.md",
+        "rank": 1,
+        "top_source": "计科-02-树与二叉树.md",
+        "latency_ms": 10.67730000067968
+      },
+      {
+        "id": "q23",
+        "question": "深度优先搜索和广度优先搜索有什么区别？",
+        "gold_source_file": "计科-03-图.md",
+        "rank": 4,
+        "top_source": "计科-01-数据结构基础.md",
+        "latency_ms": 11.203099999875121
+      },
+      {
+        "id": "q24",
+        "question": "动态规划和贪心算法有什么区别？",
+        "gold_source_file": "计科-04-算法设计与分析.md",
+        "rank": 1,
+        "top_source": "计科-04-算法设计与分析.md",
+        "latency_ms": 10.059600000204227
+      },
+      {
+        "id": "q25",
+        "question": "进程和线程有什么区别？",
+        "gold_source_file": "计科-05-操作系统.md",
+        "rank": 1,
+        "top_source": "计科-05-操作系统.md",
+        "latency_ms": 10.669600000255741
+      },
+      {
+        "id": "q26",
+        "question": "逻辑回归为什么可以用于分类？",
+        "gold_source_file": "ML-01-线性模型与逻辑回归.md",
+        "rank": 1,
+        "top_source": "ML-01-线性模型与逻辑回归.md",
+        "latency_ms": 10.524199999963457
+      },
+      {
+        "id": "q27",
+        "question": "随机森林是如何构成的？",
+        "gold_source_file": "ML-02-决策树与集成学习.md",
+        "rank": 1,
+        "top_source": "ML-02-决策树与集成学习.md",
+        "latency_ms": 9.75190000008297
+      },
+      {
+        "id": "q28",
+        "question": "反向传播算法的基本思想是什么？",
+        "gold_source_file": "ML-03-神经网络与深度学习.md",
+        "rank": 1,
+        "top_source": "ML-03-神经网络与深度学习.md",
+        "latency_ms": 15.57169999978214
+      },
+      {
+        "id": "q29",
+        "question": "GDP 有哪三种核算方法？",
+        "gold_source_file": "经济-02-宏观经济学.md",
+        "rank": 1,
+        "top_source": "经济-02-宏观经济学.md",
+        "latency_ms": 14.951500000279339
+      },
+      {
+        "id": "q30",
+        "question": "需求价格弹性表示什么？",
+        "gold_source_file": "经济-01-微观经济学.md",
+        "rank": 1,
+        "top_source": "经济-01-微观经济学.md",
+        "latency_ms": 13.902700000471668
+      }
+    ]
+  }
+}

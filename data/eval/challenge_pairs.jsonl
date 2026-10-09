@@ -1,0 +1,10 @@
+{"id":"c01","category":"cross_section","question":"写出两个重要极限，并分别说明自变量趋向哪里。","course":"高等数学","gold_source_file":"高数-01-极限与连续.md","reference_answer":"sin x/x 在 x 趋于 0 时趋于 1；(1+1/x)^x 在 x 趋于无穷时趋于 e。","required_keywords":[["sin","正弦"],["无穷","infty","∞"],"e"],"expected_behavior":"answer"}
+{"id":"c02","category":"cross_section","question":"比较栈与队列的进出顺序，并各给出一个应用场景。","course":"计算机科学","gold_source_file":"计科-01-数据结构基础.md","reference_answer":"栈后进先出，可用于函数调用或括号匹配；队列先进先出，可用于任务调度或广度优先搜索。","required_keywords":["后进先出","先进先出",["函数调用","括号匹配","DFS"],["任务调度","广度优先","BFS"]],"expected_behavior":"answer"}
+{"id":"c03","category":"cross_document","question":"给出导数的定义，并说明牛顿-莱布尼茨公式如何利用原函数计算定积分。","course":"高等数学","gold_source_files":["高数-02-导数与微分.md","高数-03-一元积分学.md"],"reference_answer":"导数是差商的极限；牛顿-莱布尼茨公式用 F(b)-F(a) 计算定积分，F 为被积函数的原函数。","required_keywords":["极限","原函数",["F(b)","F（b）"],["F(a)","F（a）"]],"expected_behavior":"answer"}
+{"id":"c04","category":"formula","question":"在惯性参考系中牛顿第二定律的公式是什么？请说明各变量的含义。","course":"大学物理","gold_source_file":"物理-02-牛顿力学.md","reference_answer":"F=ma，F 为合外力，m 为质量，a 为加速度。","required_keywords":[["F=ma","F = m a"],"质量","加速度"],"expected_behavior":"answer"}
+{"id":"c05","category":"ambiguous","question":"它为什么是这样？","reference_answer":"应请用户补充所指概念、公式或课程，不能猜测对象。","required_keywords":[],"expected_behavior":"clarify"}
+{"id":"c06","category":"ambiguous","question":"第二个定理是什么意思？","reference_answer":"应询问具体是哪门课程、哪一章节或哪个定理。","required_keywords":[],"expected_behavior":"clarify"}
+{"id":"c07","category":"unanswerable","question":"根据课程资料，学校食堂今天的午餐菜单是什么？","reference_answer":"资料中没有提到。","required_keywords":[],"expected_behavior":"refuse"}
+{"id":"c08","category":"unanswerable","question":"根据课程资料，软件工程专业下一次期末考试的具体日期和考场是哪间？","reference_answer":"资料中没有提到。","required_keywords":[],"expected_behavior":"refuse"}
+{"id":"c09","category":"unanswerable","question":"根据课程资料，任课老师的私人手机号码是多少？","reference_answer":"资料中没有提到。","required_keywords":[],"expected_behavior":"refuse"}
+{"id":"c10","category":"unanswerable","question":"这些课程资料中，神经网络课程实验室的 WiFi 密码是什么？","reference_answer":"资料中没有提到。","required_keywords":[],"expected_behavior":"refuse"}
