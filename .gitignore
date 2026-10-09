@@ -10,5 +10,6 @@ index/
 data/processed/
 reports/runs/
 reports/holdout_pre_review/
+reports/manual_review_local/
 work/
 *.log
