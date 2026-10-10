@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from .config import Settings
 from .citations import REFUSAL, resolve_citations
-from .evidence import EvidenceItem, EvidenceVerifier
+from .evidence import EvidenceItem, EvidenceVerifier, evidence_body
 from .generator import OllamaGenerator
 from .guardrails import clarification_message, immediate_refusal_reason, refusal_message, refusal_reason
 from .retriever import SearchResult, VectorRetriever
@@ -62,6 +62,16 @@ class RAGPipeline:
                 question, refusal_message(refusal), [], [], self.generator.model,
                 [refusal], True, "not_required",
             )
+        extractive = self._extractive_formula_quote(question, retrieved)
+        if extractive:
+            quote, source_id = extractive
+            sources = resolve_citations(quote, retrieved).sources
+            return RAGResponse(
+                question, quote, sources, retrieved, self.generator.model,
+                ["题目含明确线索且要求公式/关系；为避免改写公式条件，已直接摘录命中资料正文。"],
+                False, "extractive_quote",
+                [EvidenceItem(1, "资料原文摘录", [source_id], 1.0)], 1.0, 0,
+            )
         answer = self.generator.generate(question, retrieved)
         if answer.refused:
             extractive = self._extractive_formula_fallback(question, retrieved)
@@ -99,13 +109,13 @@ class RAGPipeline:
         )
 
     @staticmethod
-    def _extractive_formula_fallback(question: str, results: list[SearchResult]) -> str | None:
-        """Safely quote formula-like lines when a grounded model answer is empty.
+    def _extractive_formula_quote(question: str, results: list[SearchResult]) -> tuple[str, int] | None:
+        """Return an exact body-text quote for a narrowly scoped formula query.
 
-        This is intentionally narrow: the question must contain an explicit
-        quoted line hint and ask for a formula/relationship/complexity, and the
-        matching retrieved chunk must contain formula-like lines. It never
-        invents or paraphrases content.
+        The question must contain an explicit quoted line hint and ask for a
+        formula, relationship or complexity.  The returned content is copied
+        from one matched chunk's body only: it does not combine neighboring
+        properties or paraphrase a condition as an equivalence.
         """
         if not re.search(r"关键公式|公式或关系|复杂度", question):
             return None
@@ -114,20 +124,16 @@ class RAGPipeline:
         for index, item in enumerate(results, 1):
             if not VectorRetriever._anchor_matches(question, item):
                 continue
-            lines = []
-            for raw_line in item.text.splitlines():
-                line = raw_line.strip()
-                if not line or line.startswith("章节：") or line.startswith(">"):
-                    continue
-                formula_like = (
-                    line.startswith(("-", "*", "+"))
-                    and ("$" in line or "=" in line or "\\" in line)
-                ) or line.startswith(("$$", "\\["))
-                if formula_like:
-                    lines.append(line)
-            if lines:
-                return "\n".join(lines[:8]) + f" [资料{index}]"
+            body = evidence_body(item.text)
+            if "$" in body or "=" in body or "复杂度" in body:
+                return f"以下为资料中与题目线索匹配的原文摘录：\n{body}\n[资料{index}]", index
         return None
+
+    @staticmethod
+    def _extractive_formula_fallback(question: str, results: list[SearchResult]) -> str | None:
+        """Compatibility fallback for a model refusal on the same narrow query."""
+        quote = RAGPipeline._extractive_formula_quote(question, results)
+        return quote[0] if quote else None
 
     def close(self) -> None:
         self.retriever.close()

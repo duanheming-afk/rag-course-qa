@@ -148,6 +148,54 @@ class EvidenceTests(unittest.TestCase):
 
 
 class PipelineFallbackTests(unittest.TestCase):
+    def test_explicit_formula_question_uses_exact_source_quote_before_generation(self) -> None:
+        from app.pipeline import RAGPipeline
+
+        results = [SearchResult(
+            .8,
+            "章节：3.2 性质\n1. **单调非减**:$F(x)$ 关于 $x$ 单调不减。\n"
+            "2. **有界性**:$0 \\leq F(x) \\leq 1$。\n3. **右连续**:$F(x^+) = F(x)$。",
+            "概率.md", "3.2 性质", "概率论与数理统计", 1, "properties",
+        )]
+        pipeline = RAGPipeline.__new__(RAGPipeline)
+        pipeline.retriever = type("Retriever", (), {"search": lambda *args, **kwargs: results})()
+        pipeline.generator = type("Generator", (), {
+            "model": "fake-model",
+            "generate": lambda *args, **kwargs: self.fail("明确公式线索不应调用模型改写"),
+        })()
+
+        response = pipeline.ask(
+            "围绕“随机变量与分布”中“2 性质”的线索“单调非减”，写出关键公式或关系，并说明含义。",
+            course="概率论与数理统计",
+        )
+
+        self.assertEqual(response.citation_mode, "extractive_quote")
+        self.assertIn("**单调非减**", response.answer)
+        self.assertIn("**右连续**", response.answer)
+        self.assertNotIn("即$F(x^+) = F(x)$", response.answer)
+        self.assertEqual(response.sources[0]["chunk_id"], "properties")
+
+    def test_extractive_formula_quote_requires_an_explicit_line_hint(self) -> None:
+        from app.pipeline import RAGPipeline
+        results = [SearchResult(.8, "$x = 1$", "a.md", "公式", "课程", 1, "formula")]
+        self.assertIsNone(RAGPipeline._extractive_formula_quote("请写出关键公式或关系。", results))
+
+    def test_formula_quote_skips_matching_metadata_and_unrelated_example(self) -> None:
+        from app.pipeline import RAGPipeline
+        results = [
+            SearchResult(.9, "章节：质点运动学\n> 合成讲义 · 仅供 RAG 系统测试使用", "物理.md", "质点运动学", "大学物理", 1, "metadata"),
+            SearchResult(.8, "章节：2.3 速度\n**平均速度**:$\\bar{\\vec{v}} = \\frac{\\Delta \\vec{r}}{\\Delta t}$", "物理.md", "2.3 速度", "大学物理", 1, "velocity"),
+            SearchResult(.7, "章节：五、典型例题\n例题中的速度计算。", "物理.md", "五、典型例题", "大学物理", 1, "example"),
+        ]
+        quote = RAGPipeline._extractive_formula_quote(
+            "围绕“质点运动学”中“3 速度”的线索“平均速度”，写出关键公式或关系。", results,
+        )
+        self.assertIsNotNone(quote)
+        answer, source_id = quote
+        self.assertEqual(source_id, 2)
+        self.assertIn("\\bar{\\vec{v}}", answer)
+        self.assertNotIn("典型例题", answer)
+
     def test_formula_fallback_only_quotes_matching_explicit_anchor(self) -> None:
         from app.pipeline import RAGPipeline
         results = [
